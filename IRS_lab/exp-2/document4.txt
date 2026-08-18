@@ -1,0 +1,1 @@
+Natural language processing focuses on analyzing and understanding human language with computers. Techniques such as tokenization and stemming prepare raw text for processing. Search systems use natural language processing to understand queries better.

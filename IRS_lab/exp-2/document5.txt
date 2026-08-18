@@ -1,0 +1,1 @@
+A database system stores structured data and supports efficient queries using indexes. Relational databases organize information into tables with rows and columns. Indexes speed up the retrieval of records from large data sets.

@@ -1,0 +1,1 @@
+Machine learning is a branch of artificial intelligence that helps computers learn from data. Learning algorithms build models that can predict patterns without being explicitly programmed. Machine learning is widely used for classification and regression tasks.

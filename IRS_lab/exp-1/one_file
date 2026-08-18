@@ -1,0 +1,27 @@
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+# Read files
+with open("exp-1/doc1", "r") as f:
+    doc1 = f.read()
+
+with open("exp-1/doc2", "r") as f:
+    doc2 = f.read()
+
+documents = [doc1, doc2]
+
+# Vectorization
+vectorizer = CountVectorizer()
+X = vectorizer.fit_transform(documents)
+
+# Vocabulary
+print("Vocabulary:")
+print(vectorizer.get_feature_names_out())
+
+# Document vectors
+print("\nDocument Vectors:")
+print(X.toarray())
+
+# Cosine similarity
+print("\nCosine Similarity:")
+print(cosine_similarity(X))

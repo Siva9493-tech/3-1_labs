@@ -1,0 +1,1 @@
+Text analytics converts unstructured text into meaningful information. Analyzing documents with text analytics helps discover topics and trends. A text analytics system processes the words in a collection to build statistics.

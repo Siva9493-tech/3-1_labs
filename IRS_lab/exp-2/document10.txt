@@ -1,0 +1,1 @@
+A recommender system suggests items that a user may like based on past behavior. The system uses the frequency of past interactions to rank candidate items. Recommenders are common in e commerce and streaming platforms.

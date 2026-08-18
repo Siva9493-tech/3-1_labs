@@ -1,0 +1,1 @@
+Information retrieval is the process of finding relevant documents in a large collection of text. A search engine retrieves information based on a user query and ranks the results by relevance. The core idea is to match query terms with the text stored in documents.

@@ -1,0 +1,1 @@
+An inverted index is a data structure used by search engines to map each term to the documents containing it. The index stores posting lists, where every posting records a document identifier and the term frequency. Building an inverted index is the key step of indexing text collections.

@@ -1,0 +1,1 @@
+Data mining extracts useful patterns and knowledge from large amounts of data. Mining algorithms discover hidden relationships between variables in a dataset. The results of data mining help organizations make better decisions.

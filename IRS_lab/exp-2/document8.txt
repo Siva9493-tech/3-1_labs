@@ -1,0 +1,1 @@
+A search engine crawls the web and builds a huge index of the pages it finds. When a user submits a query, the engine consults the index and returns relevant pages quickly. Ranking is the process of ordering the matched pages by importance.
