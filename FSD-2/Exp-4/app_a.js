@@ -1,78 +1,64 @@
-const express = require('express');
-const session = require('express-session');
-const app = express();
+const mongoose = require("mongoose");
 
-// Middleware to parse form data
-app.use(express.urlencoded({ extended: true }));
+// 1. Connect to MongoDB
+mongoose
+  .connect("mongodb://admin:admin123@ac-23eizhl-shard-00-00.ggg50v6.mongodb.net:27017,ac-23eizhl-shard-00-01.ggg50v6.mongodb.net:27017,ac-23eizhl-shard-00-02.ggg50v6.mongodb.net:27017/?ssl=true&replicaSet=atlas-iqco4v-shard-0&authSource=admin&appName=Cluster0")
+  .then(() => {
+    console.log("MongoDB connected successfully");
+    performCRUD();
+  })
+  .catch((err) => console.log("Connection error:", err));
 
-// Use express-session for session management
-app.use(session({
-  secret: 'your-secret-key', // Secret key to sign the session ID cookie
-  resave: false,             // Don't resave session if it's not modified
-  saveUninitialized: true,   // Save uninitialized sessions
-  cookie: { secure: false }  // For development, set secure: false. In production, use true with HTTPS.
-}));
+// 2. Create Schema
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  department: String,
+  email: String
+});
 
-// Home route - Shows a welcome message
-app.get('/', (req, res) => {
-  // Check if the session is active
-  if (req.session.user) {
-    return res.send(`
-      <h1>Welcome back, ${req.session.user.name}!</h1>
-      <a href="/logout">Logout</a>
-    `);
+// 3. Create Model
+const Student = mongoose.model("Student", studentSchema);
+
+// 4. Perform CRUD operations
+async function performCRUD() {
+  try {
+    // CREATE
+    const student = await Student.create({
+      name: "Rahul",
+      age: 20,
+      department: "CSE",
+      email: "rahul@example.com"
+    });
+
+    console.log("\nCREATE:");
+    console.log(student);
+
+    // READ
+    const students = await Student.find();
+
+    console.log("\nREAD:");
+    console.log(students);
+
+    // UPDATE
+    const updatedStudent = await Student.findByIdAndUpdate(
+      student._id,
+      { age: 21 },
+      { new: true }
+    );
+
+    console.log("\nUPDATE:");
+    console.log(updatedStudent);
+
+    // DELETE
+    const deletedStudent = await Student.findByIdAndDelete(student._id);
+
+    console.log("\nDELETE:");
+    console.log(deletedStudent);
+
+  } catch (error) {
+    console.log("CRUD Error:", error);
+  } finally {
+    mongoose.connection.close();
   }
-
-  res.send(`
-    <h1>Home Page</h1>
-    <a href="/login">Login</a>
-  `);
-});
-
-// Login route - Render login form
-app.get('/login', (req, res) => {
-  res.send(`
-    <h1>Login Page</h1>
-    <form action="/login" method="POST">
-      <label for="username">Username:</label><br>
-      <input type="text" id="username" name="username" required><br><br>
-
-      <label for="password">Password:</label><br>
-      <input type="password" id="password" name="password" required><br><br>
-
-      <button type="submit">Login</button>
-    </form>
-  `);
-});
-
-// Login POST route - Handle user login and store session
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-
-  // For simplicity, we simulate authentication with a hardcoded check
-  if (username === 'user' && password === 'password') {
-    // Store user data in session
-    req.session.user = { name: username };
-
-    // Redirect to home page after successful login
-    return res.redirect('/');
-  }
-
-  res.send('Invalid credentials. <a href="/login">Try again</a>');
-});
-
-// Logout route - Clear the session and redirect to home
-app.get('/logout', (req, res) => {
-  req.session.destroy((err) => {
-    if (err) {
-      return res.send('Error logging out.');
-    }
-    res.redirect('/');
-  });
-});
-
-// Start the server
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+}

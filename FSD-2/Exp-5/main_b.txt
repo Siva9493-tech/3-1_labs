@@ -1,0 +1,15 @@
+import React form "react"
+import ReactDOM from "react-dom/client";
+const element=(
+<div>
+<h1>Welcome to React</h1>
+<p>This is written using JSX</p>
+<ul>
+<li>HTML like syntax</li>
+<li>Easy to read</li>
+<li>Reausable UI</li>
+</ul>
+</div>
+);
+const toot=ReactDOM.createRoot(document.getElementById("root");
+root.render(element);

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student SPA</title>
+    <style>
+        body { font-family: Arial; margin: 40px; }
+        input { padding: 8px; margin: 5px; }
+        button { padding: 8px 15px; margin: 5px; cursor: pointer; }
+        table { margin-top: 20px; border-collapse: collapse; width: 80%; }
+        th, td { border: 1px solid black; padding: 10px; }
+    </style>
+</head>
+<body>
+
+<h1>Student Management SPA</h1>
+
+<form id="studentForm">
+    <input type="text" id="name" placeholder="Name" required>
+    <input type="number" id="age" placeholder="Age" required>
+    <input type="text" id="department" placeholder="Department" required>
+    <input type="email" id="email" placeholder="Email" required>
+    <button type="submit">Add Student</button>
+</form>
+
+<h2>Student List</h2>
+
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody id="studentList"></tbody>
+</table>
+
+<script>
+const form = document.getElementById("studentForm");
+const studentList = document.getElementById("studentList");
+
+// READ students
+async function loadStudents() {
+    const response = await fetch("/api/students");
+    const students = await response.json();
+    studentList.innerHTML = "";
+
+    students.forEach(student => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${student.name}</td>
+            <td>${student.age}</td>
+            <td>${student.department}</td>
+            <td>${student.email}</td>
+            <td>
+                <button onclick="deleteStudent('${student._id}')">Delete</button>
+            </td>
+        `;
+        studentList.appendChild(row);
+    });
+}
+
+// CREATE student
+form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const student = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value,
+        department: document.getElementById("department").value,
+        email: document.getElementById("email").value
+    };
+
+    await fetch("/api/students", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(student)
+    });
+
+    form.reset();
+    loadStudents();
+});
+
+// DELETE student
+async function deleteStudent(id) {
+    await fetch(`/api/students/${id}`, { method: "DELETE" });
+    loadStudents();
+}
+
+// Load students when page opens
+loadStudents();
+</script>
+
+</body>
+</html>

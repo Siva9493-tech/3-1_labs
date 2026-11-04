@@ -1,0 +1,14 @@
+.student {
+  width: 300px;
+  margin: 50px auto;
+  padding: 20px;
+  text-align: center;
+  background-color: lightblue;
+  border: 2px solid blue;
+  border-radius: 10px;
+}
+
+.student p {
+  color: darkblue;
+  font-size: 18px;
+}

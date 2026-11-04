@@ -1,26 +1,73 @@
 const express = require('express');
+const session = require('express-session');
 const app = express();
-const path = require('path');
 
-// Set EJS as the templating engine
-app.set('view engine', 'ejs');
+// Middleware to parse form data
+app.use(express.urlencoded({ extended: true }));
 
-// Set the directory where views (templates) are stored
-app.set('views', path.join(__dirname, 'views_a'));
+// Use express-session for session management
+app.use(session({
+  secret: 'your-secret-key', // Secret key to sign the session ID cookie
+  resave: false,             // Don't resave session if it's not modified
+  saveUninitialized: true,   // Save uninitialized sessions
+  cookie: { secure: false }  // For development, set secure: false. In production, use true with HTTPS.
+}));
 
-// Example route to render a page
+// Home route - Shows a welcome message
 app.get('/', (req, res) => {
-  res.render('index', {
-    title: 'Home Page',
-    message: 'Welcome to Express with EJS templating!'
-  });
+  // Check if the session is active
+  if (req.session.user) {
+    return res.send(`
+      <h1>Welcome back, ${req.session.user.name}!</h1>
+      <a href="/logout">Logout</a>
+    `);
+  }
+
+  res.send(`
+    <h1>Home Page</h1>
+    <a href="/login">Login</a>
+  `);
 });
 
-// Another route
-app.get('/about', (req, res) => {
-  res.render('about', {
-    title: 'About Page',
-    message: 'This is the About page of the app.'
+// Login route - Render login form
+app.get('/login', (req, res) => {
+  res.send(`
+    <h1>Login Page</h1>
+    <form action="/login" method="POST">
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="username" required><br><br>
+
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password" required><br><br>
+
+      <button type="submit">Login</button>
+    </form>
+  `);
+});
+
+// Login POST route - Handle user login and store session
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
+
+  // For simplicity, we simulate authentication with a hardcoded check
+  if (username === 'user' && password === 'password') {
+    // Store user data in session
+    req.session.user = { name: username };
+
+    // Redirect to home page after successful login
+    return res.redirect('/');
+  }
+
+  res.send('Invalid credentials. <a href="/login">Try again</a>');
+});
+
+// Logout route - Clear the session and redirect to home
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      return res.send('Error logging out.');
+    }
+    res.redirect('/');
   });
 });
 

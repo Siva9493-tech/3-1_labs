@@ -1,8 +1,8 @@
 {
-  "name": "exp-3",
+  "name": "exp-4",
   "version": "1.0.0",
   "description": "",
-  "main": "app_a.js",
+  "main": "app_b.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -11,8 +11,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
-    "ejs": "^6.0.1",
+    "bcryptjs": "^3.0.3",
+    "brcypt": "^1.0.1",
     "express": "^5.2.1",
-    "express.js": "^1.0.0"
+    "express-session": "^1.19.0",
+    "js": "^0.1.0"
   }
 }

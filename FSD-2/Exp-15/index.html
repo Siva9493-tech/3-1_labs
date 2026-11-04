@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>To-Do List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+            margin: 5px 0;
+        }
+        button {
+            cursor: pointer;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 5px;
+        }
+        ul {
+            margin-top: 20px;
+        }
+        li {
+            padding: 8px;
+            background: #f1f1f1;
+            margin: 5px 0;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>To-Do List</h1>
+
+    <input type="text" id="taskInput" placeholder="Enter task">
+    <button onclick="addTask()">Add Task</button>
+    <button onclick="getTasks()">Show Tasks</button>
+
+    <ul id="taskList"></ul>
+
+    <script>
+        async function addTask() {
+            const task = document.getElementById("taskInput").value;
+            if (!task) return alert("Please enter a task");
+
+            await fetch("http://localhost:3000/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ task: task })
+            });
+
+            document.getElementById("taskInput").value = "";
+            alert("Task Added Successfully");
+            getTasks();
+        }
+
+        async function getTasks() {
+            const response = await fetch("http://localhost:3000/list");
+            const tasks = await response.json();
+
+            const list = document.getElementById("taskList");
+            list.innerHTML = "";
+
+            tasks.forEach(task => {
+                const li = document.createElement("li");
+                li.innerText = task;
+                list.appendChild(li);
+            });
+        }
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+import React,{component} from "react";
+import ReactDOM from "react.dom/client";
+
+function Header(){
+return <h1>Reac components<h1>;
+}
+
+class Content extends Component{
+render(){
+return<p> This is a class component.</p>
+}
+}
+
+function App(){
+return(
+<div>
+<Header/>
+<content/>
+</div>
+);
+}
+const root=ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App/>);
